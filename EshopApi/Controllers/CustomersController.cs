@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using EshopApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -20,19 +21,33 @@ namespace EshopApi.Controllers
         [HttpGet]
         public IActionResult GetCustomers()
         {
-            return new ObjectResult(_dbcontext.Customer);
+            HttpContext.Response.Headers.Add("X-count", _dbcontext.Customer.Count().ToString()) ;
+            var response = new ObjectResult(_dbcontext.Customer) { StatusCode = (int)HttpStatusCode.OK };
+            return response;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomer([FromRoute] int id)
         {
-            var customer = await _dbcontext.Customer.SingleOrDefaultAsync(a => a.CustomerId == id);
-            return Ok(customer);
+            if(_dbcontext.Customer.Any(c => c.CustomerId == id))
+            {
+                var customer = await _dbcontext.Customer.SingleOrDefaultAsync(a => a.CustomerId == id);
+                return Ok(customer);
+            }
+            else
+            {
+                return NotFound();
+            }
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> PostCustomer([FromBody] Customer customer)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             _dbcontext.Customer.Add(customer);
             await _dbcontext.SaveChangesAsync();
             return CreatedAtAction("GetCustomer" ,  new { id = customer.CustomerId} , customer);

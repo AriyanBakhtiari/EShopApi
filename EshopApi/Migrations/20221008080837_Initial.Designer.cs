@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EshopApi.Migrations
 {
     [DbContext(typeof(EShopApi_Context))]
-    [Migration("20221005164113_initial")]
-    partial class initial
+    [Migration("20221008080837_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,24 @@ namespace EshopApi.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customer");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            Email = "Ariyanbakhtari@gmail.com",
+                            FirstName = "Ariyan",
+                            LastName = "Bakhtiari",
+                            State = "tehran"
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            Email = "Anitabakhtari@gmail.com",
+                            FirstName = "Anita",
+                            LastName = "Bakhtiari",
+                            State = "tehran"
+                        });
                 });
 
             modelBuilder.Entity("EshopApi.Models.Order", b =>

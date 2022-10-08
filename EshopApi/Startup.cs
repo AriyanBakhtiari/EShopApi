@@ -32,6 +32,7 @@ namespace EshopApi
                 options =>
                 {
                     options.UseSqlServer("Server=localhost;Database= EShopAPI;User=sa;Password=Docker@123;");
+                    options.UseSqlServer("Data Source =.; Initial Catalog = EShopApi; Integrated Security = true");
                 });
         }
 

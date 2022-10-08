@@ -53,6 +53,24 @@ namespace EshopApi.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customer");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            Email = "Ariyanbakhtari@gmail.com",
+                            FirstName = "Ariyan",
+                            LastName = "Bakhtiari",
+                            State = "tehran"
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            Email = "Anitabakhtari@gmail.com",
+                            FirstName = "Anita",
+                            LastName = "Bakhtiari",
+                            State = "tehran"
+                        });
                 });
 
             modelBuilder.Entity("EshopApi.Models.Order", b =>

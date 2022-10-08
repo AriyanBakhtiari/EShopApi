@@ -19,6 +19,33 @@ namespace EshopApi.Models
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<SalesPerson> SalesPerson { get; set; }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            #region SeedData 
+            modelBuilder.Entity<Customer>().HasData(
+            new Customer
+            {
+                CustomerId = 1,
+                FirstName = "Ariyan",
+                LastName = "Bakhtiari",
+                Email = "Ariyanbakhtari@gmail.com",
+                State = "tehran"
+                
+            },
+            new Customer
+            {
+                CustomerId = 2,
+                FirstName = "Anita",
+                LastName = "Bakhtiari",
+                Email = "Anitabakhtari@gmail.com",
+                State = "tehran"
+
+            });
+            #endregion
+            base.OnModelCreating(modelBuilder);
+        }
+
+
+
     }
 }

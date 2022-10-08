@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EshopApi.Repsitory
+namespace EshopApi.Repository
 {
     public interface ICustomerRepository
     {

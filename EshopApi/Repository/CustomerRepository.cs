@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
-namespace EshopApi.Repsitory
+namespace EshopApi.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {

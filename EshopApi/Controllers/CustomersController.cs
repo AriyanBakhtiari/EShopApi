@@ -2,7 +2,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using EshopApi.Models;
-using EshopApi.Repsitory;
+using EshopApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -27,7 +27,7 @@ namespace EshopApi.Controllers
             {
                 StatusCode = (int)HttpStatusCode.OK
             };
-            Request.HttpContext.Response.Headers.Add("X-Count", _cusotmerRepository.GetCustomerCount().ToString());
+            //Request.HttpContext.Response.Headers.Add("X-Count", _cusotmerRepository.GetCustomerCount().ToString());
             return result;
         }
 

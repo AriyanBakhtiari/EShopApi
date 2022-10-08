@@ -32,8 +32,6 @@ namespace EshopApi.Repository
 
         public IEnumerable<Customer> GetAll()
         {
-            var test = _context.Customer;
-            var test2 = test.ToList();
             return _context.Customer.ToList();
         }
 

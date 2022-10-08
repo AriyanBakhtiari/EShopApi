@@ -2,6 +2,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using EshopApi.Models;
+using EshopApi.Repsitory;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -12,26 +13,30 @@ namespace EshopApi.Controllers
     [Route("[controller]")]
     public class CustomersController : Controller
     {
-        private EShopApi_Context _dbcontext;
-        public CustomersController(EShopApi_Context dbcontext)
+        private ICustomerRepository _cusotmerRepository;
+        public CustomersController(ICustomerRepository cusotmerRepository)
         {
-            _dbcontext = dbcontext;
+            _cusotmerRepository = cusotmerRepository;
         }
 
         [HttpGet]
         public IActionResult GetCustomers()
         {
-            HttpContext.Response.Headers.Add("X-count", _dbcontext.Customer.Count().ToString()) ;
-            var response = new ObjectResult(_dbcontext.Customer) { StatusCode = (int)HttpStatusCode.OK };
-            return response;
+
+            var result = new ObjectResult(_cusotmerRepository.GetAll())
+            {
+                StatusCode = (int)HttpStatusCode.OK
+            };
+            Request.HttpContext.Response.Headers.Add("X-Count", _cusotmerRepository.GetCustomerCount().ToString());
+            return result;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomer([FromRoute] int id)
         {
-            if(_dbcontext.Customer.Any(c => c.CustomerId == id))
+            if(await _cusotmerRepository.HasCustomer(id))
             {
-                var customer = await _dbcontext.Customer.SingleOrDefaultAsync(a => a.CustomerId == id);
+                var customer = await _cusotmerRepository.GetById(id);
                 return Ok(customer);
             }
             else
@@ -48,25 +53,21 @@ namespace EshopApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _dbcontext.Customer.Add(customer);
-            await _dbcontext.SaveChangesAsync();
+            await _cusotmerRepository.AddCustomer(customer);
             return CreatedAtAction("GetCustomer" ,  new { id = customer.CustomerId} , customer);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCustomer([FromRoute] int id, [FromBody] Customer customer)
         {
-            _dbcontext.Entry(customer).State =  EntityState.Modified;
-            await _dbcontext.SaveChangesAsync();
+            await _cusotmerRepository.UpdateCustomer(customer);
             return Ok(customer);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
         {
-            var customer = await _dbcontext.Customer.FindAsync(id);
-            _dbcontext.Customer.Remove(customer);
-            await _dbcontext.SaveChangesAsync();
+            await _cusotmerRepository.DeleteCustomer(id);
             return Ok();
         }
 

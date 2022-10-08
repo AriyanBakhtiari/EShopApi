@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EshopApi.Models;
+using EshopApi.Repsitory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,9 +32,10 @@ namespace EshopApi
             services.AddDbContext<EShopApi_Context>(
                 options =>
                 {
-                    options.UseSqlServer("Server=localhost;Database= EShopAPI;User=sa;Password=Docker@123;");
+                    //options.UseSqlServer("Server=localhost;Database= EShopAPI;User=sa;Password=Docker@123;");
                     options.UseSqlServer("Data Source =.; Initial Catalog = EShopApi; Integrated Security = true");
                 });
+            services.AddTransient<ICustomerRepository , CustomerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

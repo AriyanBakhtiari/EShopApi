@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace WebClient
+namespace WebClient.Models
 {
     public class CustomerRepository
     {
@@ -34,15 +34,16 @@ namespace WebClient
         public void AddCustomer(Customer customer)
         {
             string jsoncontent = JsonConvert.SerializeObject(customer);
-            StringContent content = new StringContent(jsoncontent, Encoding.UTF8,"applicatin/json");
-            var res = _client.PostAsync(ApiUrl, content);
+            StringContent content = new StringContent(jsoncontent, Encoding.UTF8, "application/json");
+            var res = _client.PostAsync(ApiUrl, content).Result;
+            
         }
 
         public void EditCustomer(Customer customer)
         {
             string jsoncontent = JsonConvert.SerializeObject(customer);
-            StringContent content = new StringContent(jsoncontent, Encoding.UTF8, "applicatin/json");
-            var res = _client.PutAsync(ApiUrl, content);
+            StringContent content = new StringContent(jsoncontent, Encoding.UTF8, "application/json");
+            var res = _client.PutAsync(ApiUrl + "/" + customer.CustomerId, content);
         }
         public void DeleteCustomer(int customerid)
         {

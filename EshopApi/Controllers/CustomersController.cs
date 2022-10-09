@@ -20,7 +20,7 @@ namespace EshopApi.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(Duration = 60)]
+        //[ResponseCache(Duration = 60)]
         public IActionResult GetCustomers()
         {
 
@@ -28,7 +28,7 @@ namespace EshopApi.Controllers
             {
                 StatusCode = (int)HttpStatusCode.OK
             };
-            //Request.HttpContext.Response.Headers.Add("X-Count", _cusotmerRepository.GetCustomerCount().ToString());
+            Request.HttpContext.Response.Headers.Add("X-Count", _cusotmerRepository.GetCustomerCount().ToString());
             return result;
         }
 

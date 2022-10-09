@@ -20,6 +20,7 @@ namespace EshopApi.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 60)]
         public IActionResult GetCustomers()
         {
 

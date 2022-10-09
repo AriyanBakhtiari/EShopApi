@@ -1,5 +1,7 @@
 ﻿using EshopApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -10,15 +12,19 @@ namespace EshopApi.Repository
     public class CustomerRepository : ICustomerRepository
     {
         private EShopApi_Context _context;
-        public CustomerRepository(EShopApi_Context context)
+        private IMemoryCache _cache;
+        public CustomerRepository(EShopApi_Context context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
-        public async Task<Customer> AddCustomer(Customer customer)
+        public async Task AddCustomer(Customer customer)
         {
             await _context.Customer.AddAsync(customer);
-            await _context.SaveChangesAsync();
-            return await _context.Customer.FindAsync(customer);
+            
+                await _context.SaveChangesAsync();
+            
+            
         }
 
         public async Task<Customer> DeleteCustomer(int id)
@@ -37,7 +43,19 @@ namespace EshopApi.Repository
 
         public async Task<Customer> GetById(int id)
         {
-            return await _context.Customer.Include(c => c.Orders).SingleOrDefaultAsync(c => c.CustomerId == id);
+            var customer = _cache.Get<Customer>(id);
+            if (customer != null)
+            {
+                return customer;
+            }
+            else
+            {
+                 customer = await _context.Customer.Include(c => c.Orders).SingleOrDefaultAsync(c => c.CustomerId == id);
+                var cacheoption = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(60));
+                _cache.Set(customer.CustomerId , customer , cacheoption);
+                return customer;
+            }
+            
         }
 
         public async Task<int> GetCustomerCount()

@@ -34,7 +34,7 @@ namespace EshopApi
             services.AddDbContext<EShopApi_Context>(
                 options =>
                 {
-                    //options.UseSqlServer("Server=localhost;Database= EShopAPI;User=sa;Password=Docker@123;");
+                    options.UseSqlServer("Server=localhost;Database= EShopAPI;User=sa;Password=Docker@123;");
                     options.UseSqlServer("Data Source =.; Initial Catalog = EShopApi; Integrated Security = true");
                 });
             services.AddTransient<ICustomerRepository , CustomerRepository>();

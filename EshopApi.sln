@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EshopApi", "EshopApi\EshopA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EshopApi.Test", "EshopApi.Test\EshopApi.Test.csproj", "{C677504F-AF5E-46C9-887D-D09637C3E7E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient", "WebClient\WebClient.csproj", "{F012EB96-8091-4E0B-B498-F82EA4958913}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClient", "WebClient\WebClient.csproj", "{F012EB96-8091-4E0B-B498-F82EA4958913}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

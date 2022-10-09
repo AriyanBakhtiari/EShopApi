@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +15,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace EshopApi
 {
@@ -43,6 +47,43 @@ namespace EshopApi
 
             services.AddResponseCaching();
             services.AddMemoryCache();
+
+
+            //JWT
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    //enable tokan valiation
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        //validatin in server side 
+                        ValidateIssuer = true,
+                        //validation in client side 
+                        ValidateAudience = false,
+                        //expire time of tokan 
+                        ValidateLifetime = true,
+                        //validate the tokan , اعتبار سنجی همون امضا
+                        ValidateIssuerSigningKey = true,
+                        //set servers that aprove to validate 
+                        ValidIssuer = "http://localhost:34642",
+                        //signing key
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AriyanProjectKeyValue"))
+
+                    };
+                });
+
+            //access to use other application 
+            services.AddCors(option =>
+            {
+                option.AddPolicy("AddCors", builder =>
+                {
+                    builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .Build();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +94,9 @@ namespace EshopApi
                 app.UseDeveloperExceptionPage();
             }
             app.UseResponseCaching();
+
+            app.UseCors("AddCors");
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
 

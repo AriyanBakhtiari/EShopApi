@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using EshopApi.Models;
 using EshopApi.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -11,6 +12,7 @@ namespace EshopApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class CustomersController : Controller
     {
         private ICustomerRepository _cusotmerRepository;

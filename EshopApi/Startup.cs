@@ -65,7 +65,7 @@ namespace EshopApi
                         //validate the tokan , اعتبار سنجی همون امضا
                         ValidateIssuerSigningKey = true,
                         //set servers that aprove to validate 
-                        ValidIssuer = "http://localhost:34642",
+                        ValidIssuer = "https://localhost:44350",
                         //signing key
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AriyanProjectKeyValue"))
 

@@ -33,7 +33,7 @@ namespace EshopApi.Controllers
             var signingcredential = new SigningCredentials(secretkey, SecurityAlgorithms.HmacSha256);
 
             var tokenoption = new JwtSecurityToken(
-                issuer: "http://localhost:34642",
+                issuer: "https://localhost:44350",
                 claims: new List<Claim>
                 {
                     new Claim(ClaimTypes.Name,login.UserName),

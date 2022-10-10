@@ -35,7 +35,8 @@ namespace WebClient.Controllers
         [HttpPost]
         public IActionResult Create(Customer customer)
         {
-            _customerRepository.AddCustomer(customer);
+            var token = User.FindFirst("AccessToken")?.Value;
+            _customerRepository.AddCustomer(customer,token);
             return RedirectToAction("Index");
         }
 

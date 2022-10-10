@@ -12,7 +12,7 @@ namespace EshopApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+   // [Authorize]
     public class CustomersController : Controller
     {
         private ICustomerRepository _cusotmerRepository;

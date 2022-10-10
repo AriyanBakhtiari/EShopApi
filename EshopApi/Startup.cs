@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Options;
+
 namespace EshopApi
 {
     public class Startup
@@ -38,12 +41,23 @@ namespace EshopApi
             services.AddDbContext<EShopApi_Context>(
                 options =>
                 {
-                  // options.UseSqlServer("Server=localhost;Database= EShopAPI;User=sa;Password=Docker@123;");
+                    // options.UseSqlServer("Server=localhost;Database= EShopAPI;User=sa;Password=Docker@123;");
                     options.UseSqlServer("Data Source =.; Initial Catalog = EShopApi; Integrated Security = true");
                 });
-            services.AddTransient<ICustomerRepository , CustomerRepository>();
-            services.AddTransient<ISalesPersonRepository , SalesPersonRepository>();
-            services.AddTransient<IProductRepository , ProductRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<ISalesPersonRepository, SalesPersonRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v2", new OpenApiInfo
+                {
+                    Title = "TestSwagger",
+                    Version = "v2",
+                    Description = "Sample service",
+                    
+                });
+            });
 
             services.AddResponseCaching();
             services.AddMemoryCache();
@@ -93,10 +107,16 @@ namespace EshopApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v2/swagger.json", "TestSwagger");
+            });
             app.UseResponseCaching();
 
             app.UseCors("AddCors");
             app.UseAuthentication();
+
 
             app.UseHttpsRedirection();
 
